@@ -11,6 +11,10 @@ subbed_feed_monitor = ""
 
 def cleanse_summary(summary, for_reading=False):
     if not for_reading:
+        summary = summary.replace("<p>", "")
+        summary = summary.replace("</p>", "")
+        summary = summary.replace("<span>", "")
+        summary = summary.replace("</span>", "")
         summary = html2markdown.convert(summary)
         summary = summary.replace("\n", "\\n")
     else:
@@ -26,7 +30,8 @@ def parseRss(url):
         print(f"ERROR. THE FEED AT {url} MAY BE INVALID. BREAKING...")
         return
     for entry in feed.entries:
-        entry.summary = cleanse_summary(entry.summary)
+        for i in range(2): # do it twice to fix any html text
+            entry.summary = cleanse_summary(entry.summary)
 
     # Open CSV file for existing entries
     with open(subbed_feed_monitor, mode='r', newline='', encoding='utf-8') as csv_file:
@@ -60,7 +65,6 @@ new_posts = []
 feed_titles = []
 
 def parseAndCheckRss(url):
-    skip_all = False
     try:
         feed = feedparser.parse(url)
         print("Checking feed '" + feed.feed.title + "'")
@@ -93,14 +97,7 @@ Link:
 Published:
     {entry.published}
 Summary:
-    {entry.summary}""")
-            if not skip_all:
-                print(f"Do you want to open the link in {entry.title}? [y/N/skip_all]")
-                ans = input()
-                if ans.lower() == "y":
-                    webbrowser.open(entry.link)
-                if ans.lower() == "skip_all" or ans.lower() == "skip all":
-                    skip_all = True
+    {cleanse_summary(entry.summary)}""")
             # Optionally, update monitored CSV (consider efficiency for large feeds)
             with open(subbed_feed_monitor, mode='a', newline='', encoding='utf-8') as csv_file:
                 writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
@@ -219,7 +216,7 @@ def reading_parser(title_of_feed):
     item_num = 1
     print("Type the number beside the post you want to read.")
     for post in titles_to_display:
-        print(f"{item_num}: {post['title']}")
+        print(f"{item_num}: \"{post['title']}\" PUBLISHED {post['published']}")
         item_num += 1
     try:
         num_to_read = int(input())-1
@@ -257,3 +254,12 @@ while True:
             refresh_feed()
         case "read":
             read_feed()
+        case "reset":
+            print("WARNING! WARNING! WARNING!")
+            print("THIS IS A DESTRUCTIVE ACTION. THIS WILL DELETE ALL CURRENTLY SAVED POSTS. THEY WILL BE LOST FOREVER, UNLESS THEY ARE STILL ON THE SITE. CONFIRM?")
+            if input("Confirm? [y/N]") == "y":
+                with open(subbed_feed_monitor, "w") as file:
+                    file.write("feed,title,link,published,summary\n")
+                    file.close()
+                print("POSTS RESET. REFRESHING WITH NEW POSTS...")
+                refresh_feed()

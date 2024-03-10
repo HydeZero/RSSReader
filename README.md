@@ -1,7 +1,7 @@
 # RSSReader
-RSSReader is a RSS Reader made in Python. It takes feeds from URLs, checks for new posts, and outputs it into markdown-friendly formatting. It saves feed urls and feed posts in 2 files in the user's home directory.
+RSSReader is a RSS Reader made in Python. It takes feeds from URLs, checks for new posts, and outputs it into markdown-friendly formatting. It saves feed urls and feed posts in 2 files in the user's home directory. 
 
-### WORKS ON WINDOWS, MACOS, AND LINUX!
+This works on Windows, Mac OS, and GNU/Linux systems.
 
 ## Directions to use
 First, clone this repository using git clone.
@@ -36,5 +36,7 @@ It is not recommended to use this on rapidly posting/changing feeds, as it will 
 
 `read`: reads a post.
 
+`reset`: resets the post file and refreshes the feed. Use this if the post file is broken or is getting too large. All posts saved in the file will be lost forever, unless the post is still on the feed..
+
 ## More Notes
-Some sites will be broken with the feed.
+Some sites will be broken with the parser. This is out of my control. I am beginning to fix it by manually replacing some html elements with spaces.
