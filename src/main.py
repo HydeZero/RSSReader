@@ -3,11 +3,14 @@ import os # to get the user's home directory
 import platform # to get the os to get the correct variable
 import csv # to check for new posts
 import webbrowser # to open the links in the feed
-import html2markdown
+import html2markdown # to convert html to markdown
 
+#get the os type
 os_type = platform.system()
 subbed_feed_file = ""
 subbed_feed_monitor = ""
+
+# Clean the summary by removing html and converting it into markdown friendly formatting, and escaping the newlines so that it wont break the csv file
 
 def cleanse_summary(summary, for_reading=False):
     if not for_reading:
@@ -21,8 +24,9 @@ def cleanse_summary(summary, for_reading=False):
         summary = str(summary).replace("\\n", "\n")
     return summary
 
-def parseRss(url):
+# parse the url for the feed
 
+def parseRss(url):
     try:
         feed = feedparser.parse(url)
         print("Checking feed '" + feed.feed.title + "'")
@@ -49,7 +53,7 @@ def parseRss(url):
         if entry.title not in existing_titles:
             has_new_posts = True
             new_posts.append(entry)
-            # Optionally, update monitored CSV (consider efficiency for large feeds)
+            # Update the file
             with open(subbed_feed_monitor, mode='a', newline='', encoding='utf-8') as csv_file:
                 writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
                 writer.writerow({'feed': feed.feed.title, 'title': entry.title, 'link': entry.link, 'published': entry.published, 'summary': entry.summary})
@@ -60,9 +64,12 @@ def parseRss(url):
     
     if feed.feed.title not in feed_titles:
         feed_titles.append(feed.feed.title)
+# blank lists for posts and feed titles
 new_posts = []
 
 feed_titles = []
+
+# the same thing as parseRss except with notifications if new posts were found
 
 def parseAndCheckRss(url):
     try:
@@ -75,7 +82,6 @@ def parseAndCheckRss(url):
         entry.summary = cleanse_summary(entry.summary)
 
 
-    # Open CSV file for existing entries
     with open(subbed_feed_monitor, mode='r', newline='', encoding='utf-8') as csv_file:
         fieldnames = ['feed', 'title', 'link', 'published', 'summary']
         reader = csv.DictReader(csv_file, fieldnames=fieldnames)
@@ -83,9 +89,7 @@ def parseAndCheckRss(url):
         for row in reader:
             if row['feed'] == feed.feed.title:
                 existing_titles.append(row['title'])
-                
-
-    # Check for new posts
+    # check for new posts
     has_new_posts = False
     for entry in feed.entries:
         if entry.title not in existing_titles:
@@ -98,7 +102,6 @@ Published:
     {entry.published}
 Summary:
     {cleanse_summary(entry.summary)}""")
-            # Optionally, update monitored CSV (consider efficiency for large feeds)
             with open(subbed_feed_monitor, mode='a', newline='', encoding='utf-8') as csv_file:
                 writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
                 writer.writerow({'feed': feed.feed.title, 'title': entry.title, 'link': entry.link, 'published': entry.published, 'summary': entry.summary})
@@ -109,7 +112,7 @@ Summary:
     
     if feed.feed.title not in feed_titles:
         feed_titles.append(feed.feed.title)
-
+# get the directory for each os
 if os_type == "Windows":
     subbed_feed_file = os.environ.get("UserProfile") + "\\subbedFeeds.txt"
     subbed_feed_monitor = os.environ.get("UserProfile") + "\\subbedFeedsContent.csv"
@@ -118,7 +121,7 @@ elif os_type == "Darwin" or os_type == "Linux":
     subbed_feed_monitor = os.environ.get("HOME") + "/subbedFeedsContent.csv"
 
 is_new_file = False
-
+# check if the feed file exists
 try:
     with open(subbed_feed_file, "r") as file:
         print("File Found")
@@ -128,9 +131,9 @@ except:
     with open(subbed_feed_file, "w") as file:
         print("Made File.")
         file.close()
-
+# Open the file for reading
 feed_file = open(subbed_feed_file, "r")
-
+# if it is a new file, clear the monitored posts. Otherwise, continue.
 if is_new_file:
     with open(subbed_feed_monitor, "w") as file:
         file.write("feed,title,link,published,summary")
@@ -147,7 +150,7 @@ def refresh_feed():
         parseAndCheckRss(line)
 
 refresh_feed()
-
+#the functions.
 def add_feed():
     feed_file = open(subbed_feed_file, "a")
     print("What is the url to the feed to add?")
@@ -203,7 +206,7 @@ def read_feed():
     except IndexError:
         print(f"Can't find the feed you specified (feed {num_to_read+1}). Try again.")
     reading_parser(feed_to_read_from)
-
+# parse the post to prepare for reading
 def reading_parser(title_of_feed):
     titles_to_display = []
     with open(subbed_feed_monitor, mode='r', newline='', encoding='utf-8') as csv_file:
@@ -230,9 +233,9 @@ def reading_parser(title_of_feed):
         if input().lower() != "n":
             webbrowser.open(post_to_read['link'])
     except IndexError:
-        print(f"Can't find the post you specified (feed {num_to_read+1}). Try again.")
+        print(f"Can't find the post you specified (post {num_to_read+1}). Try again.")
 
-        
+# infinite loop asking for what to do
 
 while True:
     print("Command (help for commands):")
