@@ -16,9 +16,9 @@ Finally, install the required dependencies using `pip install`.
 
 ``pip install -r requirements.txt``
 
-Now, you are ready to use it! Just run `python3 ./src/main.py` and add a feed. It will automatically create 2 files to store feed posts and feed urls. They are subbedFeeds.txt and subbedFeedsContent.csv, so dont delete those.
+Now, you are ready to use it! Just run `python3 ./src/main.py` and add a feed. It will automatically create 2 files in your home directory to store feed posts and feed urls. They are subbedFeeds.txt and subbedFeedsContent.csv, so dont delete those.
 
-Every time it boots up, it will check for new posts.
+Every time it runs, it will check for new posts.
 
 It is not recommended to use this on rapidly posting/changing feeds, as it will clog up the post file fast.
 
@@ -36,7 +36,7 @@ It is not recommended to use this on rapidly posting/changing feeds, as it will 
 
 `read`: reads a post.
 
-`reset`: resets the post file and refreshes the feed. Use this if the post file is broken or is getting too large. All posts saved in the file will be lost forever, unless the post is still on the feed..
+`reset`: resets the post file and refreshes the feed. Use this if the post file is broken or is getting too large. All posts saved in the file will be lost forever, unless the post is still on the feed.
 
 ## More Notes
 Some sites will be broken with the parser. This is out of my control. I am beginning to fix it by manually replacing some html elements with spaces.
