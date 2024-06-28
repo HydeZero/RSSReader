@@ -4,7 +4,7 @@ RSSReader is a RSS Reader made in Python. It takes feeds from URLs, checks for n
 This works on Windows, Mac OS, and GNU/Linux systems.
 
 ### Workflow Notes
-Workflow will fail since the code contains features that were added after the Python version that is installed on it. (match case, added in Python 3.10)
+The Windows workflow will fail since the code contains features that were added after the Python version that is installed on it. (match case, added in Python 3.10). Linux workflows work though. Github, please update Python on windows-latest.
 
 ## Directions to use
 First, clone this repository using git clone.
