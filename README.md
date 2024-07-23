@@ -13,7 +13,7 @@ First, clone this repository using git clone.
 
 Now, `cd` into the directory created by the repository and make a virtual environment there.
 
-``python3 -m venv ./``
+``python3 -m venv ./.env``
 
 Finally, install the required dependencies using `pip install`.
 
