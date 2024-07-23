@@ -15,6 +15,12 @@ Now, `cd` into the directory created by the repository and make a virtual enviro
 
 ``python3 -m venv ./.env``
 
+Activate the virtual environment.
+
+Windows: ``./env/Scripts/activate.bat`` for CMD or ``./env/Scripts/activate.ps1`` for Powershell
+
+Mac OS and Linux: ``source ./.env/bin/activate``
+
 Finally, install the required dependencies using `pip install`.
 
 ``pip install -r requirements.txt``
