@@ -8,6 +8,11 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
       - run: cd ${{ github.workspace }}
+      - name: Set python up
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          architecture: 'x64'
       - run: python --version
       - run: python -m venv .\
       - run: .\scripts\activate.ps1
