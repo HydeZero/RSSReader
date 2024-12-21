@@ -5,7 +5,7 @@ import csv # to check for new posts
 import webbrowser # to open the links in the feed
 import html2markdown # to convert html to markdown
 
-#get the os type
+# get the os type
 os_type = platform.system()
 subbed_feed_file = ""
 subbed_feed_monitor = ""
