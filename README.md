@@ -6,11 +6,15 @@ This works on Windows, Mac OS, and GNU/Linux systems.
 ## Directions to use
 First, clone this repository using git clone.
 
-``git clone https://github.com/HydeZero/RSSReader.git``
+```bash
+git clone https://github.com/HydeZero/RSSReader.git
+```
 
 Now, `cd` into the directory created by the repository and make a virtual environment there.
 
-``python3 -m venv ./.env``
+```bash
+python3 -m venv ./.env
+```
 
 Activate the virtual environment.
 
@@ -20,7 +24,9 @@ Mac OS and Linux: ``source ./.env/bin/activate``
 
 Finally, install the required dependencies using `pip install`.
 
-``pip install -r requirements.txt``
+```bash
+pip install -r requirements.txt
+```
 
 Now, you are ready to use it! Just run `python3 ./src/main.py` and add a feed. It will automatically create 2 files in your home directory to store feed posts and feed urls. They are subbedFeeds.txt and subbedFeedsContent.csv, so dont delete those.
 
